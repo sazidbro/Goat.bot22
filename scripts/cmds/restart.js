@@ -23,7 +23,7 @@ module.exports = {
 			restartting: "🔄 | Đang khởi động lại bot..."
 		},
 		en: {
-			restartting: "🫨 𝑹𝒆𝒔𝒕𝒂𝒓𝒕𝒊𝒏𝒈....."
+			restartting: "🤖𝗢𝗞𝗘 𝗕𝗢𝗦𝗦 𓆩𝐒𝐇𝐀𝐊𝐈𝐋𓆪🔄 | Restarting bot..."
 		}
 	},
 
@@ -31,7 +31,7 @@ module.exports = {
 		const pathFile = `${__dirname}/tmp/restart.txt`;
 		if (fs.existsSync(pathFile)) {
 			const [tid, time] = fs.readFileSync(pathFile, "utf-8").split(" ");
-			api.sendMessage(`𝐇𝐞𝐲 𝐒𝐚𝐆𝐨𝐫 𝐈𝐦 𝐁𝐚𝐜𝐤...!`, tid);
+			api.sendMessage(`𝐇𝐞𝐲「 ✦ 𝗦𝗛𝗔𝗞𝗜𝗟 ✦ 」𝐈𝐦 𝐁𝐚𝐜𝐤...!`, tid);
 			fs.unlinkSync(pathFile);
 		}
 	},
