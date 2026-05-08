@@ -2,7 +2,7 @@ module.exports = {
 	config: {
 		name: "help",
 		version: "1.0",
-		author: "SaGor",
+		author: "Shakil",
 		countDown: 5,
 		role: 0,
 		shortDescription: "Show command list",
