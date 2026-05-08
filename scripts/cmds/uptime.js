@@ -1,86 +1,154 @@
 const Canvas = require("canvas");
-const fs = require("fs");
+const fs = require("fs-extra");
 const path = require("path");
 
 module.exports = {
-config: {
-name: "uptime",
-aliases: ["upt","up","rtm"],
-version: "10.0",
-author: "SAGOR",
-countDown: 5,
-role: 0,
-shortDescription: "Stylish uptime canvas",
-longDescription: "Uptime bar with canvas",
-category: "system",
-guide: "{pn}"
-},
+  config: {
+    name: "uptime",
+    aliases: ["upt", "up", "rtm"],
+    version: "11.0",
+    author: "SHAKIL",
+    countDown: 5,
+    role: 0,
+    shortDescription: {
+      en: "Stylish uptime canvas"
+    },
+    longDescription: {
+      en: "Show bot uptime with stylish progress bar"
+    },
+    category: "system",
+    guide: {
+      en: "{pn}"
+    }
+  },
 
-onStart: async function ({ api, event }) {
+  onStart: async function ({ api, event }) {
+    const react = (emoji) =>
+      api.setMessageReaction(
+        emoji,
+        event.messageID,
+        () => {},
+        true
+      );
 
-const react = (e) => api.setMessageReaction(e, event.messageID, event.threadID, () => {}, true);
+    try {
+      react("⏳");
 
-try {
+      // Canvas Create
+      const canvas = Canvas.createCanvas(700, 320);
+      const ctx = canvas.getContext("2d");
 
-  react("⏳");
+      // Background
+      const gradient = ctx.createLinearGradient(0, 0, 700, 320);
+      gradient.addColorStop(0, "#0f0f0f");
+      gradient.addColorStop(1, "#1f1f1f");
 
-  const canvas = Canvas.createCanvas(500, 200);
-  const ctx = canvas.getContext("2d");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#1e1e1e";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Border
+      ctx.strokeStyle = "#00ffcc";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(10, 10, 680, 300);
 
-  const uptime = process.uptime();
+      // Uptime
+      const uptime = process.uptime();
 
-  const days = Math.floor(uptime / 86400);
-  const hours = Math.floor((uptime % 86400) / 3600);
-  const minutes = Math.floor((uptime % 3600) / 60);
-  const seconds = Math.floor(uptime % 60);
+      const days = Math.floor(uptime / 86400);
+      const hours = Math.floor((uptime % 86400) / 3600);
+      const minutes = Math.floor((uptime % 3600) / 60);
+      const seconds = Math.floor(uptime % 60);
 
-  const percent = Math.min(100, (uptime / 86400) * 100);
+      const totalSeconds = 86400; // 24h
+      const percent = Math.min(100, (uptime / totalSeconds) * 100);
 
-  ctx.fillStyle = "#555";
-  ctx.fillRect(50, 120, 400, 30);
+      // Title
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 38px Arial";
+      ctx.fillText("BOT UPTIME STATUS", 160, 70);
 
-  let fillColor = "#00FF00";
+      // Uptime Text
+      ctx.fillStyle = "#00ffcc";
+      ctx.font = "bold 30px Arial";
+      ctx.fillText(
+        `${days}D ${hours}H ${minutes}M ${seconds}S`,
+        180,
+        140
+      );
 
-  if (percent < 30) fillColor = "#FF0000";
-  else if (percent < 70) fillColor = "#FFFF00";
-  else if (percent < 95) fillColor = "#FFA500";
+      // Progress Background
+      ctx.fillStyle = "#2b2b2b";
+      ctx.fillRect(80, 190, 540, 45);
 
-  ctx.fillStyle = fillColor;
-  ctx.fillRect(50, 120, 4 * percent, 30);
+      // Progress Color
+      let fillColor = "#00ff00";
 
-  ctx.strokeStyle = "#ffffff";
-  ctx.lineWidth = 2;
-  ctx.strokeRect(50, 120, 400, 30);
+      if (percent < 30) fillColor = "#ff0000";
+      else if (percent < 70) fillColor = "#ffff00";
+      else if (percent < 95) fillColor = "#ff9900";
 
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "22px Arial";
+      // Progress Fill
+      ctx.fillStyle = fillColor;
+      ctx.fillRect(80, 190, (540 * percent) / 100, 45);
 
-  ctx.fillText(`Uptime: ${days}d ${hours}h ${minutes}m ${seconds}s`, 50, 80);
-  ctx.fillText(`Progress: ${percent.toFixed(1)}%`, 50, 180);
+      // Progress Border
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(80, 190, 540, 45);
 
-  const cachePath = path.join(__dirname, "cache");
-  if (!fs.existsSync(cachePath)) fs.mkdirSync(cachePath);
+      // Percentage
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 24px Arial";
+      ctx.fillText(
+        `Progress : ${percent.toFixed(1)}%`,
+        220,
+        280
+      );
 
-  const imgPath = path.join(cachePath, "uptime.png");
+      // Cache Folder
+      const cachePath = path.join(__dirname, "cache");
 
-  fs.writeFileSync(imgPath, canvas.toBuffer());
+      if (!fs.existsSync(cachePath)) {
+        fs.mkdirSync(cachePath, { recursive: true });
+      }
 
-  react("✅");
+      // Image Path
+      const imagePath = path.join(
+        cachePath,
+        `uptime_${Date.now()}.png`
+      );
 
-  await api.sendMessage({
-    attachment: fs.createReadStream(imgPath)
-  }, event.threadID, () => fs.unlinkSync(imgPath));
+      // Save Image
+      fs.writeFileSync(imagePath, canvas.toBuffer("image/png"));
 
-} catch (err) {
+      react("✅");
 
-  console.log(err);
-  react("❌");
+      // Send
+      await api.sendMessage(
+        {
+          body:
+            `╭─❍\n` +
+            `⏰ 𝗕𝗢𝗧 𝗨𝗣𝗧𝗜𝗠𝗘\n` +
+            `├‣ ${days} Day(s)\n` +
+            `├‣ ${hours} Hour(s)\n` +
+            `├‣ ${minutes} Minute(s)\n` +
+            `╰‣ ${seconds} Second(s)`,
+          attachment: fs.createReadStream(imagePath)
+        },
+        event.threadID,
+        () => fs.unlinkSync(imagePath),
+        event.messageID
+      );
 
-  api.sendMessage("⚠️ Uptime canvas error.", event.threadID);
-}
+    } catch (err) {
+      console.log(err);
+      react("❌");
 
-}
+      api.sendMessage(
+        `⚠️ | Uptime canvas failed.\n${err.message}`,
+        event.threadID,
+        event.messageID
+      );
+    }
+  }
 };
