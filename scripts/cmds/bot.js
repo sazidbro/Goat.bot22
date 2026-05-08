@@ -38,14 +38,15 @@ module.exports = {
           console.error('Error replying to user:', error);
           return api.sendMessage('An error occurred while processing your request. Please try again later.', event.threadID, event.messageID);
         }
-        global.client.handleReply.push({
-          type: 'reply',
-          name: this.config.name,
-          messageID: info.messageID,
-          author: event.senderID,
-          head: event.body
-        });
-      }, event.messageID);
+       if (info?.messageID) {
+  global.client.handleReply.push({
+    type: 'reply',
+    name: this.config.name,
+    messageID: info.messageID,
+    author: event.senderID || events.senderID,
+    head: event.body || msg
+  });
+}, event.messageID);
 
     } catch (error) {
       console.error('Error in handleReply:', error);
@@ -74,14 +75,15 @@ module.exports = {
             return nayan.reply('An error occurred while processing your request. Please try again later.', events.threadID, events.messageID);
           }
 
-          global.client.handleReply.push({
-            type: 'reply',
-            name: this.config.name,
-            messageID: info.messageID,
-            author: events.senderID,
-            head: msg,
-          });
-        }, events.messageID);
+         if (info?.messageID) {
+  global.client.handleReply.push({
+    type: 'reply',
+    name: this.config.name,
+    messageID: info.messageID,
+    author: events.senderID,
+    head: msg,
+  });
+         }, events.messageID);
       }
 
       else if (msg.startsWith("textType")) {
@@ -211,14 +213,15 @@ module.exports = {
             return nayan.reply('An error occurred while processing your request. Please try again later.', events.threadID, events.messageID);
           }
 
-          global.client.handleReply.push({
-            type: 'reply',
-            name: this.config.name,
-            messageID: info.messageID,
-            author: events.senderID,
-            head: msg,
-          });
-        }, events.messageID);
+         if (info?.messageID) {
+  global.client.handleReply.push({
+    type: 'reply',
+    name: this.config.name,
+    messageID: info.messageID,
+    author: events.senderID,
+    head: msg,
+  });
+      }, events.messageID);
       }
     } catch (error) {
       console.log(error);
