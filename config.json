@@ -10,55 +10,55 @@
   },
   "antiInbox": false,
   "language": "en",
-  "nickNameBot": "❚█══🆂🅰🅶🅾🆁══█❚",
-  "prefix": ".",
+  "nickNameBot": "❚█══🆂︎🅷︎🅰︎🅺︎🅸︎🅻︎══█❚",
+  "prefix": ",",
   "adminOnly": {
     "enable": false,
     "ignoreCommand": []
   },
   "adminBot": [
-    "61581197276223",
-    "100003180900133"
+    "61588886578862",
+    ""
   ],
   "premiumUsers": [
-    "61581197276223",
-    "100003180900133"
+    "61588886578862",
+    ""
   ],
   "devUsers": [
-    "61581197276223",
-    "100003180900133"
+    "61588886578862",
+    ""
   ],
   "vipUsers": [
-    "61581197276223",
-    "100003180900133"
+    "61588886578862",
+    "61588886578862"
   ],
   "modUsers": [
-    "61581197276223",
-    "100003180900133"
+    "61588886578862",
+    "61588886578862"
   ],
   "supportUsers": [
-    "61581197276223",
-    "100003180900133"
+    "61588886578862",
+    ""
   ],
   "managerUsers": [
-    "61581197276223",
-    "100003180900133"
+    "61588886578862",
+    ""
   ],
   "rootOwner": [
-    "61581197276223",
-    "100003180900133"
+    "61588886578862",
+    ""
   ],
   "reactBy": {
     "delete": [
       "😠",
       "😡",
-      "",
-      ""
+      "🤬",
+      "🥵"
     ],
     "kick": [
       "🦵",
-      "🖕",
-      "🦿",
+      "",
+      "",
       "🦶"
     ],
     "mute": [
@@ -80,8 +80,8 @@
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [
-      "61581197276223",
-      "100003180900133"
+      "61588886578862",
+      "61588886578862"
     ]
   },
   "whiteListModeThread": {
@@ -165,7 +165,7 @@
     "message_unsend": true,
     "message_reply": true,
     "event": true,
-    "read_receipt": false,
+    "read_receipt": true,
     "typ": false,
     "presence": false
   },
@@ -179,7 +179,7 @@
     "selfListenEvent": true,
     "autoMarkDelivery": false,
     "autoReconnect": false,
-    "fca": "sagor-nx-fca"
+    "fca": "shakil-nx-fca"
   },
   "noPrefixMode": true
 }
