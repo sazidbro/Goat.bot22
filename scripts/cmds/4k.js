@@ -3,59 +3,65 @@ const fs = require("fs-extra");
 const path = require("path");
 
 module.exports = {
-	config: {
-		name: "4k",
-		aliases: ["enhance"],
-		version: "1.0",
-		author: "ChatGPT",
-		countDown: 5,
-		role: 0,
-		shortDescription: "Enhance image",
-		longDescription: "Enhance image to HD quality",
-		category: "image",
-		guide: "{pn} reply to image"
-	},
+  config: {
+    name: "4k",
+    version: "1.0",
+    author: "Shakil",
+    countDown: 5,
+    role: 0,
+    shortDescription: {
+      en: "Enhance image to HD"
+    },
+    longDescription: {
+      en: "Reply to an image and enhance it to high quality"
+    },
+    category: "image",
+    guide: {
+      en: "{pn} reply to image"
+    }
+  },
 
-	onStart: async function ({ message, event }) {
-		try {
+  onStart: async function ({ message, event }) {
+    try {
+      const reply = event.messageReply;
 
-			if (!event.messageReply?.attachments?.length) {
-				return message.reply("🖼️ | ছবির reply দাও জান");
-			}
+      if (!reply || !reply.attachments || reply.attachments.length === 0) {
+        return message.reply("🖼️ | কোনো ছবির reply দাও জান");
+      }
 
-			const attachment = event.messageReply.attachments[0];
+      const attachment = reply.attachments[0];
 
-			if (attachment.type !== "photo") {
-				return message.reply("❌ | শুধু ছবির reply দাও");
-			}
+      if (attachment.type !== "photo") {
+        return message.reply("❌ | শুধু ছবির reply দাও");
+      }
 
-			const imageUrl = attachment.url;
+      const imgUrl = attachment.url;
 
-			await message.reply("✨ | Image enhancing...");
+      message.reply("✨ | Image enhancing...");
 
-			// New API
-			const api = `https://api.ryzendesu.vip/api/ai/remini?url=${encodeURIComponent(imageUrl)}`;
+      // API URL
+      const api = `https://api.popcat.xyz/v2/imgenhance?image=${encodeURIComponent(imgUrl)}`;
 
-			const imgPath = path.join(__dirname, "cache", `${Date.now()}.jpg`);
+      const imgPath = path.join(__dirname, "cache", `4k_${Date.now()}.jpg`);
 
-			const response = await axios({
-				url: api,
-				method: "GET",
-				responseType: "arraybuffer"
-			});
+      const response = await axios({
+        url: api,
+        method: "GET",
+        responseType: "arraybuffer"
+      });
 
-			fs.writeFileSync(imgPath, response.data);
+      fs.writeFileSync(imgPath, response.data);
 
-			await message.reply({
-				body: "✅ | Enhanced Successfully",
-				attachment: fs.createReadStream(imgPath)
-			});
+      await message.reply({
+        body: "✅ | 4K Enhanced Image",
+        attachment: fs.createReadStream(imgPath)
+      });
 
-			fs.unlinkSync(imgPath);
+      fs.unlinkSync(imgPath);
 
-		} catch (e) {
-			console.log(e);
-			message.reply("❌ | কাজ করে নাই, API down থাকতে পারে");
-		}
-	}
+    } catch (err) {
+      console.log(err);
+      message.reply("❌ | Enhance করতে সমস্যা হয়েছে");
+    }
+  }
 };
