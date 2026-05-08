@@ -4,7 +4,7 @@ module.exports = {
   config: {
     name: "boom",
     version: "1.8",
-    author: "SaGor",
+    author: "Shakil",
     role: 2,
     shortDescription: "JSON Boom",
     category: "fun",
