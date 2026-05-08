@@ -1,46 +1,24 @@
-module.exports = {
-  config: {
-    name: "murgi2",
-    version: "1.0.2",
-    permission: 2,
-    credits: "SaGor",
-    prefix: false,
-    description: "Use Fun For Call Murgi2",
-    category: "Murgi",
-    usages: "[tag|uid|reply]",
-    cooldowns: 5,
-  },
+module.exports.config = {
+	name: "murgi2",
+	version: "1.0.2",
+	permission: 2,
+	credits: "shakil",
+	prefix: false,
+	description: "",
+	category: "without prefix",
+	usages: "[tag]",
+	cooldowns: 5
+};
 
-  onStart: async function ({ api, args, event }) {
-    let mention;
-    let name;
-
+module.exports.run = async function({ api, args, Users, event}) {
+		var mention = Object.keys(event.mentions)[0];
+		if(!mention) return api.sendMessage("বস আপনি কাকে চুদতে চান এমন 1 জনকে @ম্যানশন করতে হবে", event.threadID);
+ let name =  event.mentions[mention];
+		var arraytag = [];
+				arraytag.push({id: mention, tag: name});
+		var a = function (a) { api.sendMessage(a, event.threadID); }
     
-    if (event.type === "message_reply") {
-      mention = event.messageReply.senderID;
-      name = (await api.getUserInfo(mention))[mention].name;
-    }
-    
-    else if (Object.keys(event.mentions).length > 0) {
-      mention = Object.keys(event.mentions)[0];
-      name = event.mentions[mention];
-    }
-    
-    else if (args[0] && /^\d+$/.test(args[0])) {
-      mention = args[0];
-      name = (await api.getUserInfo(mention))[mention].name;
-    }
-    else {
-      return api.sendMessage("বস যে মেয়েকে চুদ*তে চাউ সে মেয়েকে @ম্যানশন/UID/Reply দেউ", event.threadID, event.messageID);
-    }
-
-    var arraytag = [];
-    arraytag.push({ id: mention, tag: name });
-
-    var a = function (msg) { api.sendMessage(msg, event.threadID); };
-
-    
-    a("চুদা লো");
+    a("বস 𓆩─꯭─⃝͎̽𝐒𝐇𝐀𝐊𝐈𝐋𓆪 এর চুদা লো-🖕🥵");
     setTimeout(() => {a({body: "খাংকির মেয়ে তর মারে চুদি 🥰।" + " " + name, mentions: arraytag})}, 3000);
     setTimeout(() => {a({body: " খাংকির মেয়ে তর কচি বোন রে চুদি 😍.." + " " + name, mentions: arraytag})}, 5000);
     setTimeout(() => {a({body: "মাদারচোদ তর আম্মু পম পম খাংকির পো 🐰" + " " + name, mentions: arraytag})}, 7000);
